@@ -3,9 +3,14 @@ import Navbar from "./Navbar";
 import Login from "./Login";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
 
 function SingnUp(){
+    const [showPassword, setShowPassword]=useState(false);
+    const [showConfirmPassword, setShowConfirmPassword]=useState(false);
+     const [isHuman, setIsHuman] = useState(false);
 
     const userDetail={
         name:"",
@@ -26,8 +31,40 @@ const handleInput=(e)=>{
 }
 
 const handleSubmit=(e)=>{
+    if (showPassword !== showConfirmPassword) {
+  alert("password incorrect");
+  return;
+    }
+
+function Register() {
+  return (
+    <form>
+      <label>
+        <input type="checkbox" required />
+        {" "}I am human
+      </label>
+
+      <br /><br />
+      <button type="submit">Register</button>
+    </form>
+  );
+}
+
+
+  const handleSubmit = (e) => {
     e.preventDefault();
-      
+
+    if (!isHuman) {
+      setError("Please confirm you are human.");
+      return;
+    }
+
+    setError("");
+    console.log("Form submitted");
+  };
+
+e.preventDefault();
+
       if (data.name ==""|| data.email == "" || data.password==""){
         alert("please Enter the Detail !")
 
@@ -43,7 +80,7 @@ const handleSubmit=(e)=>{
 
 }
 return(
-<div >
+<div id="singupPage" >
 <Navbar/>
 <div className="main-page">
     <form onSubmit={handleSubmit}>
@@ -51,9 +88,23 @@ return(
             <p className="heading">Sign Up</p>
         </div>
         <div>
-            <input type="text" name="name" placeholder="Enter your Name" onChange={handleInput}/>
-            <input type="email" name="email" placeholder="Enter your Email" onChange={handleInput}/>
-            <input type="password" name="password" placeholder="Enter your Password" onChange={handleInput}/>
+            <input type="text" name="name" placeholder="Username" onChange={handleInput}/>
+            <input type="email" name="email" placeholder="Email" onChange={handleInput}/>
+            <div className="password-container">
+            <input type={showPassword ? "text":"password"} name="password" placeholder="Password" onChange={handleInput}/>
+            <span className="eyeIcon" onClick={() => setShowPassword(!showPassword)}>
+            <FontAwesomeIcon icon={showPassword ?  faEye:faEyeSlash} />
+            </span>
+            </div>
+            <div className="ConfirmPassword">
+            <input type={showConfirmPassword ? "text":"password"} name="password" placeholder="Confirm Password" onChange={handleInput}/>
+            <span className="eyeIcon"  onClick={() => setShowConfirmPassword(!showConfirmPassword)}>
+            <FontAwesomeIcon icon={showConfirmPassword ? faEye:faEyeSlash} />
+            </span>
+              </div>
+            <label className="label"><input type="checkbox" checked={isHuman} onChange={(e) => setIsHuman(e.target.checked)}/><span>I am human</span> </label>
+
+           
             <p>Already have an account?<a href="/Login">Login</a></p>
 
             <button>SignUp</button>
@@ -61,8 +112,7 @@ return(
         </div>
     </form>
     <div>
-        <img src="https://media.gettyimages.com/id/1336438227/video/concept-of-students-distance-learning-or-business-womens-home-office-freelance-working-life.avif?s=640x640&k=20&c=YwrNuhiQ-jqcq_fQcASHTEmutOZ1hQEHdn-ivMs_Pno=" alt="image"/>
-    
+ 
     </div>
 
 
@@ -72,4 +122,5 @@ return(
 )
 
 }
+
 export default SingnUp;
